@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="slides-format" content="viewport" />
+    <title>Med & Skin - Corporate Overview</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Tailwind theme -->
+    <style type="text/tailwindcss">
+        @theme {
+            /* Clinical, premium light theme derived from Med & Skin website */
+            --color-bg: #F8FAFC;
+            --color-bg-deep: #E5EEF8;
+            --color-surface: #FFFFFF;
+            --color-text: #0F172A;
+            --color-text-secondary: #334155;
+            --color-text-muted: #64748B;
+            --color-accent-1: #0EA5E9; /* medical aqua blue */
+            --color-accent-2: #22C55E; /* fresh clinical green */
+            --color-accent-3: #FACC15; /* soft golden highlight */
+            --color-glass-bg: rgba(255, 255, 255, 0.92);
+            --color-glass-border: rgba(15, 23, 42, 0.06);
+            --color-vignette: rgba(15, 23, 42, 0.06);
+            --font-display: 'Century Gothic', 'Myriad Pro', Tahoma, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-body: 'Century Gothic', Tahoma, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+    </style>
+
+    <style>
+        :root {
+            --color-bg: #F8FAFC;
+            --color-text: #0F172A;
+            --glow-color-rgb: 14,165,233; /* accent-1 as glow base */
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { background: var(--color-bg); margin: 0; }
+        body { font-family: var(--font-body); color: var(--color-text); overflow: hidden; height: 100vh; width: 100vw; }
+        .deck { width: 100vw; height: 100vh; position: relative; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transform: scale(0.97); transition: opacity 0.7s ease, transform 0.7s ease; pointer-events: none; overflow: hidden; }
+        .slide.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .slide > .content { position: relative; z-index: 2; width: 100%; max-width: 1120px; padding: clamp(1.8rem, 4vw, 3.6rem); }
+        .nav-controls { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; z-index: 100; background: var(--color-glass-bg); backdrop-filter: blur(12px); padding: 8px 22px; border-radius: 999px; border: 1px solid var(--color-glass-border); box-shadow: 0 18px 40px rgba(15,23,42,0.14); }
+        .nav-btn { width: 40px; height: 40px; border: none; background: rgba(148, 163, 184, 0.1); color: #0EA5E9; border-radius: 999px; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.25s ease, transform 0.25s ease; }
+        .nav-btn:hover { background: rgba(148, 163, 184, 0.18); transform: translateY(-1px); }
+        .slide-dots { display: flex; gap: 8px; }
+        .slide-dots .dot { width: 9px; height: 9px; border-radius: 999px; background: rgba(148, 163, 184, 0.4); cursor: pointer; transition: background 0.25s ease, transform 0.25s ease, width 0.25s ease; }
+        .slide-dots .dot.active { background: #0EA5E9; transform: scale(1.15); width: 18px; }
+        .slide-counter { font-size: 0.8rem; color: #6B7280; min-width: 48px; text-align: center; font-weight: 500; }
+        .reveal { opacity: 0; transform: translateY(18px); }
+
+        @keyframes float-slow {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -40px) scale(1.08); }
+            50% { transform: translate(-30px, 30px) scale(0.96); }
+            75% { transform: translate(30px, 10px) scale(1.04); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes float-drift {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(-35px, -40px) scale(1.06) rotate(2deg); }
+            66% { transform: translate(30px, 25px) scale(0.94) rotate(-1deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .gradient-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.16; animation: float-slow 16s ease-in-out infinite; }
+        .blob:nth-child(2) { animation: float-drift 20s ease-in-out infinite; }
+        .blob:nth-child(3) { animation: float-slow 22s ease-in-out infinite reverse; }
+
+        .slide::before {
+            content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background-repeat: repeat; background-size: 260px 260px; opacity: 0.035; mix-blend-mode: multiply;
+        }
+        .slide::after {
+            content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 55%, var(--color-vignette) 100%);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 18px rgba(var(--glow-color-rgb), 0.55), 0 0 36px rgba(var(--glow-color-rgb), 0.25);
+        }
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 18px rgba(var(--glow-color-rgb), 0.55), 0 0 36px rgba(var(--glow-color-rgb), 0.25); }
+            50% { text-shadow: 0 0 26px rgba(var(--glow-color-rgb), 0.85), 0 0 52px rgba(var(--glow-color-rgb), 0.35); }
+        }
+        .glow-pulse { animation: glow-pulse 3.5s ease-in-out infinite; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.15s !important; }
+        }
+
+        .mouse-spotlight { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+
+        /* Slide-specific tweaks */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.75rem; }
+        .kpi-card { background: var(--color-glass-bg); border-radius: 1rem; border: 1px solid var(--color-glass-border); padding: 0.9rem 1rem; box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
+        .kpi-label { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: #94A3B8; font-weight: 600; }
+        .kpi-value { font-size: 1.25rem; font-weight: 800; color: #0F172A; }
+
+        .timeline { position: relative; padding-left: 1.5rem; margin-top: 1.5rem; }
+        .timeline::before { content: ''; position: absolute; left: 0.3rem; top: 0.1rem; bottom: 0.1rem; width: 2px; background: linear-gradient(to bottom, rgba(14,165,233,0.9), rgba(34,197,94,0.3)); border-radius: 999px; }
+        .timeline-item { position: relative; padding-left: 1.5rem; margin-bottom: 0.8rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -0.1rem; top: 0.4rem; width: 10px; height: 10px; border-radius: 999px; background: #0EA5E9; box-shadow: 0 0 0 4px rgba(14,165,233,0.18); }
+        .timeline-year { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.16em; color: #6B7280; font-weight: 700; }
+        .timeline-text { font-size: 0.9rem; color: #0F172A; }
+
+        .seminar-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+        .seminar-card { background: var(--color-glass-bg); border-radius: 0.9rem; border: 1px solid var(--color-glass-border); padding: 0.85rem 0.95rem; display: flex; flex-direction: column; gap: 0.25rem; }
+        .seminar-meta { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: #6B7280; font-weight: 600; }
+        .seminar-title { font-size: 0.9rem; font-weight: 600; color: #0F172A; }
+        .seminar-detail { font-size: 0.8rem; color: #4B5563; }
+
+        @media (max-width: 900px) {
+            .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .seminar-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mouse-spotlight"></div>
+
+<div class="deck">
+    <!-- Slide 1: Company Overview -->
+    <div class="slide slide-1 active" data-slide="1">
+        <div class="gradient-mesh">
+            <div class="blob" style="width: 420px; height: 420px; top: -120px; right: -80px; background: rgba(14,165,233,0.65);"></div>
+            <div class="blob" style="width: 360px; height: 360px; bottom: -140px; left: -60px; background: rgba(34,197,94,0.60);"></div>
+            <div class="blob" style="width: 260px; height: 260px; top: 52%; left: 12%; background: rgba(250,204,21,0.50);"></div>
+        </div>
+        <div class="content">
+            <div class="flex flex-col gap-6">
+                <div class="flex items-start justify-between gap-6">
+                    <div class="reveal">
+                        <p class="uppercase tracking-[0.22em] text-[0.7rem] text-sky-500 font-semibold mb-2">Professional Aesthetics · Injectable Medicine · Cosmeceuticals</p>
+                        <h1 class="font-display text-[clamp(2.3rem,4.6vw,3.4rem)] font-semibold text-accent-1 tracking-tight mb-2">
+                            MED &amp; SKIN
+                        </h1>
+                        <p class="text-[0.98rem] text-text-secondary max-w-xl">
+                            Premium distributor of professional cosmetics and aesthetic medicine solutions across the Benelux, the United Kingdom and France, founded in Brussels in 2017.
+                        </p>
+                    </div>
+                    <div class="reveal flex flex-col items-end text-right text-[0.78rem] text-text-muted">
+                        <p class="font-semibold text-[0.8rem] text-text-secondary">Head office</p>
+                        <p>Chaussée d'Etterbeek 168<br/>1040 Etterbeek, Brussels</p>
+                        <p class="mt-2">Brussels · Paris · London</p>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-label">Founded</div>
+                            <div class="kpi-value">2017</div>
+                            <div class="text-[0.78rem] text-text-muted mt-1">Brussels, Belgium</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Countries of operation</div>
+                            <div class="kpi-value">3+</div>
+                            <div class="text-[0.78rem] text-text-muted mt-1">Benelux, United Kingdom, France</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Brand partners</div>
+                            <div class="kpi-value">9+</div>
+                            <div class="text-[0.78rem] text-text-muted mt-1">Injectables, peels, cosmeceuticals &amp; devices</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Seminars delivered</div>
+                            <div class="kpi-value">500+</div>
+                            <div class="text-[0.78rem] text-text-muted mt-1">Hands-on trainings &amp; masterclasses</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal flex items-center justify-between gap-4 border-t border-slate-200 pt-3 mt-2 text-[0.8rem] text-text-muted">
+                    <p class="max-w-3xl">
+                        Med &amp; Skin SRL is a fast-growing distribution company specialising in the wholesale of professional cosmetics and aesthetic medicine products, combining injectable medicine with world-class cosmeceutical brands to deliver modern, reliable technologies and visible results.
+                    </p>
+                    <div class="flex flex-col items-end text-right">
+                        <a href="https://med-skin.be" class="text-sky-500 hover:text-sky-600 font-semibold">www.med-skin.be</a>
+                        <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="056c6b636a4568606128766e6c6b2b6760">[email&#160;protected]</a> · +32 471 30 77 52</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Portfolio & Business Development -->
+    <div class="slide slide-2" data-slide="2">
+        <div class="gradient-mesh">
+            <div class="blob" style="width: 380px; height: 380px; top: -140px; right: -60px; background: rgba(14,165,233,0.55);"></div>
+            <div class="blob" style="width: 320px; height: 320px; bottom: -120px; left: -40px; background: rgba(34,197,94,0.5);"></div>
+        </div>
+        <div class="content">
+            <div class="flex flex-col gap-6">
+                <div class="flex items-baseline justify-between gap-4">
+                    <div class="reveal">
+                        <p class="uppercase tracking-[0.22em] text-[0.7rem] text-sky-500 font-semibold mb-1">Portfolio &amp; Business Development</p>
+                        <h2 class="font-display text-[clamp(1.8rem,3.8vw,2.5rem)] font-semibold text-text tracking-tight mb-1">
+                            Diversified aesthetics portfolio, structured market expansion
+                        </h2>
+                        <p class="text-[0.95rem] text-text-secondary max-w-2xl">
+                            From injectable medicine to advanced cosmeceuticals, Med &amp; Skin has built a balanced brand mix and a clear expansion trajectory across the Benelux, France and the United Kingdom.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-7 mt-2">
+                    <div class="reveal flex flex-col gap-3">
+                        <h3 class="text-[0.85rem] uppercase tracking-[0.18em] text-text-muted font-semibold mb-1">Brand portfolio</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">Aesthetic Dermal</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Injectables &amp; fillers</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">Apriline</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">HA dermal fillers</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">Dr.Pen</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Microneedling devices</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">HL – Always Active</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Holy Land professional skincare</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">RRS</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Royal Renew System mesotherapy</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">Skin Tech</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Chemical peels</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">WiQo Med</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">PRX‑T33® biorevitalisation</p>
+                            </div>
+                            <div class="rounded-xl border border-glass-border bg-glass-bg p-3.5 shadow-md">
+                                <p class="text-[0.8rem] font-semibold text-text-secondary">DSD de Luxe</p>
+                                <p class="text-[0.8rem] text-text-muted mt-1">Trichology &amp; hair care</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal">
+                        <h3 class="text-[0.85rem] uppercase tracking-[0.18em] text-text-muted font-semibold mb-2">Company timeline</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-year">2017</div>
+                                <div class="timeline-text">Med &amp; Skin founded in Brussels. Launch of injectable product distribution.</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2018</div>
+                                <div class="timeline-text">Exclusive Benelux distributor for Apriline, Medic Control Peel, Mesaltera, Skinasil and DSD de Luxe.</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2019</div>
+                                <div class="timeline-text">Relocated to new office with dedicated training rooms. Exclusive distribution of WiQo Med / PRX‑T33® for Belgium &amp; Luxembourg.</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2020</div>
+                                <div class="timeline-text">Opened branches in Paris and London. Exclusive distributor of Holy Land for Belgium, Luxembourg, France and the UK.</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2021–2023+</div>
+                                <div class="timeline-text">Launched online store, expanded Skin Tech distribution to Belgium (excl. Flanders), France and the UK, broadened portfolio and training centres, and increased participation in international congresses.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Education, Congresses & Market Activity -->
+    <div class="slide slide-3" data-slide="3">
+        <div class="gradient-mesh">
+            <div class="blob" style="width: 400px; height: 400px; top: -130px; right: -70px; background: rgba(14,165,233,0.6);"></div>
+            <div class="blob" style="width: 320px; height: 320px; bottom: -110px; left: -40px; background: rgba(34,197,94,0.5);"></div>
+            <div class="blob" style="width: 220px; height: 220px; top: 58%; left: 18%; background: rgba(250,204,21,0.45);"></div>
+        </div>
+        <div class="content">
+            <div class="flex flex-col gap-5">
+                <div class="reveal flex items-baseline justify-between gap-4">
+                    <div>
+                        <p class="uppercase tracking-[0.22em] text-[0.7rem] text-sky-500 font-semibold mb-1">Education, Congresses &amp; Market Activity</p>
+                        <h2 class="font-display text-[clamp(1.8rem,3.6vw,2.4rem)] font-semibold text-text tracking-tight mb-1">
+                            Active educator and international distributor representative
+                        </h2>
+                        <p class="text-[0.95rem] text-text-secondary max-w-2xl">
+                            Med &amp; Skin combines distribution with continuous education, representing its brand partners at leading international congresses and delivering hands-on seminars for practitioners across Europe.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reveal grid grid-cols-[minmax(0,1.05fr)_minmax(0,1.1fr)] gap-6 mt-1">
+                    <div class="flex flex-col">
+                        <h3 class="text-[0.85rem] uppercase tracking-[0.18em] text-text-muted font-semibold mb-2">Selected seminars &amp; trainings</h3>
+                        <div class="seminar-grid">
+                            <div class="seminar-card">
+                                <div class="seminar-meta">24 Avr 2025 · &#x1F1E7;&#x1F1EA; Brussels</div>
+                                <div class="seminar-title">Peeling chimique &amp; RRS® Spanish Glow</div>
+                                <div class="seminar-detail">Dr Philippe Deprez · Dolce La Hulpe · Skin Tech</div>
+                            </div>
+                            <div class="seminar-card">
+                                <div class="seminar-meta">16 Jun 2025 · &#x1F1E7;&#x1F1EA; Brussels Etterbeek</div>
+                                <div class="seminar-title">Protocole PRX&#x2011;T33 + Cellbooster® Suisselle</div>
+                                <div class="seminar-detail">Samira Hjiaj · Ch&#233;e d'Etterbeek 168 · WiQo</div>
+                            </div>
+                            <div class="seminar-card">
+                                <div class="seminar-meta">26 Sep 2025 · &#x1F1E7;&#x1F1EA; Drongen (Gent)</div>
+                                <div class="seminar-title">SEMINAR: WiQo / Cell&#x2011;Booster</div>
+                                <div class="seminar-detail">Elke Coppens · Oude Abdij Drongen · WiQo/Suisselle</div>
+                            </div>
+                            <div class="seminar-card">
+                                <div class="seminar-meta">15 Nov 2025 · &#x1F1E7;&#x1F1EA; Brussels</div>
+                                <div class="seminar-title">Skin Tech RRS Spanish Glow</div>
+                                <div class="seminar-detail">Dr Houda Laatabi · Rue du Lac 37 · Skin Tech / RRS</div>
+                            </div>
+                            <div class="seminar-card">
+                                <div class="seminar-meta">29 Nov 2025 · &#x1F1E7;&#x1F1EA; Brussels Etterbeek</div>
+                                <div class="seminar-title">Formation Peeling Ph&#233;nol – Lip &amp; Eyelid</div>
+                                <div class="seminar-detail">Dr Bibiana Romero · Ch&#233;e d'Etterbeek 168 · Skin Tech</div>
+                            </div>
+                            <div class="seminar-card">
+                                <div class="seminar-meta">14 Oct &amp; 25 Nov · &#x1F1E7;&#x1F1EA; Brussels Etterbeek</div>
+                                <div class="seminar-title">Holy Land / WiQo – Protocoles de soin</div>
+                                <div class="seminar-detail">Samira Hjiaj · Ch&#233;e d'Etterbeek 168 · HL &amp; WiQo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal flex items-center justify-between gap-4 border-t border-slate-200 pt-3 mt-1 text-[0.8rem] text-text-muted">
+                    <p class="max-w-3xl">
+                        Through active participation in SBME‑BVEG, Estetika Brussels, and the Congrès International Francophone de Mésothérapie (SSBM), Med &amp; Skin supports practitioners with evidence-based protocols and positions its brand partners strongly across key European markets.
+                    </p>
+                    <div class="text-right">
+                        <p class="font-semibold text-text-secondary">Med &amp; Skin SRL</p>
+                        <p>www.med-skin.be · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="741d1a121b3419111059071f1d1a5a1611">[email&#160;protected]</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Congress Participation -->
+    <div class="slide slide-4" data-slide="4">
+        <div class="gradient-mesh">
+            <div class="blob" style="width: 420px; height: 420px; top: -130px; right: -70px; background: rgba(14,165,233,0.55);"></div>
+            <div class="blob" style="width: 300px; height: 300px; bottom: -100px; left: -40px; background: rgba(34,197,94,0.45);"></div>
+            <div class="blob" style="width: 200px; height: 200px; top: 50%; left: 20%; background: rgba(250,204,21,0.40);"></div>
+        </div>
+        <div class="content">
+            <div class="flex flex-col gap-6">
+                <div class="reveal flex items-baseline justify-between gap-4">
+                    <div>
+                        <p class="uppercase tracking-[0.22em] text-[0.7rem] text-sky-500 font-semibold mb-1">International Congress Presence</p>
+                        <h2 class="font-display text-[clamp(1.8rem,3.6vw,2.4rem)] font-semibold text-text tracking-tight mb-1">
+                            Representing Med &amp; Skin at leading European congresses
+                        </h2>
+                        <p class="text-[0.95rem] text-text-secondary max-w-2xl">
+                            Med &amp; Skin is an active exhibitor and brand representative at the most important aesthetic medicine congresses in Belgium, strengthening visibility and partner relationships year after year.
+                        </p>
+                    </div>
+                </div>
+                <div class="reveal grid grid-cols-3 gap-5 mt-1">
+                    <div style="background:rgba(255,255,255,0.92);border:1px solid rgba(15,23,42,0.06);border-radius:1rem;padding:1.4rem 1.5rem;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:flex;flex-direction:column;gap:0.6rem;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:#94A3B8;font-weight:600;">&#x1F1E7;&#x1F1EA; Brussels</span>
+                            <span style="font-size:0.66rem;background:rgba(14,165,233,0.1);color:#0EA5E9;border-radius:999px;padding:0.15rem 0.6rem;font-weight:700;">ANNUAL</span>
+                        </div>
+                        <div style="font-size:1.05rem;font-weight:700;color:#0F172A;line-height:1.3;">SBME&#x2011;BVEG Congress</div>
+                        <div style="font-size:0.8rem;color:#4B5563;">Soci&#233;t&#233; Belge de M&#233;decine Esth&#233;tique &middot; Belgian Society for Aesthetic Medicine</div>
+                        <div style="font-size:0.78rem;color:#64748B;border-top:1px solid rgba(15,23,42,0.07);padding-top:0.6rem;margin-top:auto;">
+                            Exhibitor &amp; brand representative<br/>
+                            <span style="color:#0EA5E9;font-weight:600;">WiQo Med &middot; RRS &middot; Skin Tech &middot; Holy Land</span>
+                        </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.92);border:1px solid rgba(15,23,42,0.06);border-radius:1rem;padding:1.4rem 1.5rem;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:flex;flex-direction:column;gap:0.6rem;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:#94A3B8;font-weight:600;">&#x1F1E7;&#x1F1EA; Brussels &middot; Tour &amp; Taxis</span>
+                            <span style="font-size:0.66rem;background:rgba(34,197,94,0.12);color:#16A34A;border-radius:999px;padding:0.15rem 0.6rem;font-weight:700;">ATTENDED &#10003;</span>
+                        </div>
+                        <div style="font-size:1.05rem;font-weight:700;color:#0F172A;line-height:1.3;">Estetika Brussels</div>
+                        <div style="font-size:0.8rem;color:#4B5563;">Leading international congress for aesthetics &amp; beauty in Belgium</div>
+                        <div style="font-size:0.76rem;color:#0EA5E9;font-weight:500;">estetika.be</div>
+                        <div style="font-size:0.78rem;color:#64748B;border-top:1px solid rgba(15,23,42,0.07);padding-top:0.6rem;margin-top:auto;">
+                            Exhibitor &amp; live demo station<br/>
+                            <span style="color:#0EA5E9;font-weight:600;">Full portfolio showcase &middot; Multiple editions</span>
+                        </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.92);border:1px solid rgba(15,23,42,0.06);border-radius:1rem;padding:1.4rem 1.5rem;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:flex;flex-direction:column;gap:0.6rem;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:#94A3B8;font-weight:600;">&#x1F1E7;&#x1F1EA; Belgique &middot; Francophone</span>
+                            <span style="font-size:0.66rem;background:rgba(34,197,94,0.12);color:#16A34A;border-radius:999px;padding:0.15rem 0.6rem;font-weight:700;">ATTENDED &#10003;</span>
+                        </div>
+                        <div style="font-size:1.05rem;font-weight:700;color:#0F172A;line-height:1.3;">Congr&#232;s International Francophone de M&#233;soth&#233;rapie</div>
+                        <div style="font-size:0.8rem;color:#4B5563;">Organis&#233; par la Soci&#233;t&#233; Scientifique Belge de M&#233;soth&#233;rapie (SSBM)</div>
+                        <div style="font-size:0.78rem;color:#64748B;border-top:1px solid rgba(15,23,42,0.07);padding-top:0.6rem;margin-top:auto;">
+                            Pr&#233;sence officielle distributeur<br/>
+                            <span style="color:#0EA5E9;font-weight:600;">RRS &middot; Royal Renew System &middot; M&#233;soth&#233;rapie</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal flex items-center justify-between gap-4 border-t border-slate-200 pt-3 mt-1 text-[0.8rem] text-text-muted">
+                    <p class="max-w-3xl">
+                        By maintaining a consistent presence at these congresses, Med &amp; Skin builds lasting relationships with practitioners, amplifies brand awareness and demonstrates its commitment to the highest standards of aesthetic medicine.
+                    </p>
+                    <div class="text-right">
+                        <p class="font-semibold text-text-secondary">Med &amp; Skin SRL</p>
+                        <p>www.med-skin.be</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="nav-controls">
+    <button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button>
+    <div class="slide-dots" id="dots"></div>
+    <button class="nav-btn" onclick="changeSlide(1)">&#8250;</button>
+    <span class="slide-counter" id="counter">1 / 4</span>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    let current = 1;
+    const total = document.querySelectorAll('.slide').length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    for (let i = 1; i <= total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 1 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+    function goToSlide(n) {
+        const prev = document.querySelector('.slide.active');
+        const next = document.querySelector(`.slide[data-slide="${n}"]`);
+        if (prev) prev.classList.remove('active');
+        if (next) { next.classList.add('active'); animateSlide(next); }
+        current = n; updateNav();
+    }
+    function changeSlide(dir) {
+        let next = current + dir;
+        if (next < 1) next = total;
+        if (next > total) next = 1;
+        goToSlide(next);
+    }
+    function updateNav() {
+        document.querySelectorAll('.dot').forEach((d, i) => {
+            d.classList.toggle('active', i + 1 === current);
+        });
+        counter.textContent = current + ' / ' + total;
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+    });
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+
+    function animateSlide(slide) {
+        slide.querySelectorAll('.reveal').forEach((el, i) => {
+            el.style.transition = 'none';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(18px)';
+            el.offsetHeight;
+            const delay = i * 0.08;
+            el.style.transition = `opacity 0.35s ease ${delay}s, transform 0.35s ease ${delay}s`;
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0px)';
+        });
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const spotlight = document.querySelector('.mouse-spotlight');
+        if (spotlight) {
+            const rgb = getComputedStyle(document.documentElement).getPropertyValue('--glow-color-rgb').trim();
+            spotlight.style.background = `radial-gradient(320px circle at ${e.clientX}px ${e.clientY}px, rgba(${rgb},0.07) 0%, transparent 70%)`;
+        }
+    });
+
+    // Init first slide
+    animateSlide(document.querySelector('.slide.active'));
+</script>
+</body>
+</html>
