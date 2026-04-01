@@ -123,11 +123,92 @@
         .seminar-title { font-size: 0.9rem; font-weight: 600; color: #0F172A; }
         .seminar-detail { font-size: 0.8rem; color: #4B5563; }
 
+        /* ── TABLET (≤ 900px) ── */
         @media (max-width: 900px) {
             .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .seminar-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+            .seminar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
-    </style>
+
+        /* ── MOBILE (≤ 640px) ── */
+        @media (max-width: 640px) {
+            /* Scrollable body */
+            html, body { overflow-x: hidden; overflow-y: auto; height: auto; min-height: 100vh; width: 100%; }
+            .deck { height: auto; position: relative; }
+            .mouse-spotlight { display: none; }
+
+            /* Slides: one visible at a time, height auto, scrollable content */
+            .slide {
+                position: relative !important;
+                top: auto !important; left: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 100svh;
+                overflow: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+                pointer-events: all !important;
+                display: none !important;
+                align-items: flex-start !important;
+                justify-content: flex-start !important;
+                padding-bottom: 80px;
+            }
+            .slide.active { display: flex !important; }
+
+            /* Reveal: always visible on mobile (no JS animation needed) */
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* Content padding */
+            .slide > .content { padding: 1.2rem 1rem 0.5rem; max-width: 100%; }
+
+            /* KPI → 2 col */
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 0.55rem; margin-top: 0.8rem; }
+            .kpi-value { font-size: 1rem; }
+            .kpi-label { font-size: 0.62rem; }
+
+            /* Timeline */
+            .timeline { margin-top: 0.8rem; }
+            .timeline-text { font-size: 0.8rem; }
+            .timeline-item { margin-bottom: 0.6rem; }
+
+            /* Seminar grid → 1 col */
+            .seminar-grid { grid-template-columns: 1fr; gap: 0.55rem; margin-top: 0.6rem; }
+            .seminar-title { font-size: 0.82rem; }
+            .seminar-detail { font-size: 0.75rem; }
+
+            /* Flex rows that should stack vertically */
+            .flex.items-start.justify-between,
+            .flex.items-baseline.justify-between,
+            .flex.items-center.justify-between,
+            .flex.items-center.justify-between.gap-4.border-t {
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+            }
+
+            /* Right-aligned blocks → left on mobile */
+            .flex.flex-col.items-end,
+            .flex.flex-col.items-end.text-right { align-items: flex-start !important; text-align: left !important; }
+
+            /* Brand grid 2-col */
+            .grid.grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; gap: 0.4rem; }
+
+            /* Inline-style grids (slide 2, 3) → 1 col */
+            [style*="grid-template-columns: minmax(0,1.2fr)"],
+            [style*="grid-template-columns: minmax(0,1.05fr)"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Congress grid (slide 4) → 1 col */
+            #congress-grid { grid-template-columns: 1fr !important; }
+
+            /* Nav */
+            .nav-controls { bottom: 12px; padding: 6px 14px; gap: 8px; }
+            .nav-btn { width: 32px; height: 32px; font-size: 1rem; }
+            .slide-counter { font-size: 0.72rem; min-width: 36px; }
+        }
+</style>
 </head>
 <body>
 
@@ -218,7 +299,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-7 mt-2">
+                <div class="grid gap-7 mt-2" style="grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);">
                     <div class="reveal flex flex-col gap-3">
                         <h3 class="text-[0.85rem] uppercase tracking-[0.18em] text-text-muted font-semibold mb-1">Brand portfolio</h3>
                         <div class="grid grid-cols-2 gap-3">
@@ -308,7 +389,7 @@
                     </div>
                 </div>
 
-                <div class="reveal grid grid-cols-[minmax(0,1.05fr)_minmax(0,1.1fr)] gap-6 mt-1">
+                <div class="reveal grid gap-6 mt-1" style="grid-template-columns: minmax(0,1.05fr) minmax(0,1.1fr);">
                     <div class="flex flex-col">
                         <h3 class="text-[0.85rem] uppercase tracking-[0.18em] text-text-muted font-semibold mb-2">Selected seminars &amp; trainings</h3>
                         <div class="seminar-grid">
@@ -379,7 +460,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="reveal grid grid-cols-3 gap-5 mt-1">
+                <div class="reveal grid gap-5 mt-1" id="congress-grid" style="grid-template-columns: repeat(3,minmax(0,1fr));">
                     <div style="background:rgba(255,255,255,0.92);border:1px solid rgba(15,23,42,0.06);border-radius:1rem;padding:1.4rem 1.5rem;box-shadow:0 10px 30px rgba(15,23,42,0.08);display:flex;flex-direction:column;gap:0.6rem;">
                         <div style="display:flex;align-items:center;justify-content:space-between;">
                             <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.16em;color:#94A3B8;font-weight:600;">&#x1F1E7;&#x1F1EA; Brussels</span>
@@ -481,6 +562,14 @@
     });
 
     function animateSlide(slide) {
+        if (window.innerWidth <= 640) {
+            slide.querySelectorAll('.reveal').forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+                el.style.transition = 'none';
+            });
+            return;
+        }
         slide.querySelectorAll('.reveal').forEach((el, i) => {
             el.style.transition = 'none';
             el.style.opacity = '0';
