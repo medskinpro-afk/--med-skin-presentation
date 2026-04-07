@@ -541,12 +541,86 @@ html, body {
     .slide-title { font-size: 1.5rem; }
 }
 @media print {
-    .nav-controls, .mouse-spotlight, .header-pill, .header-sep, .cta-btn { display: none !important; }
-    html, body { overflow: visible !important; height: auto !important; }
-    .deck { position: relative !important; height: auto !important; bottom: auto !important; overflow: visible !important; }
-    .slide { position: relative !important; inset: auto !important; opacity: 1 !important; transform: none !important; pointer-events: all !important; display: flex !important; page-break-after: always; height: auto !important; min-height: 90vh; }
-    .slide > .content { max-height: none !important; overflow: visible !important; }
-    .site-header { position: relative !important; }
+    /* ── Hide interactive / decorative elements ── */
+    .nav-controls, .mouse-spotlight, .cta-btn, .contact-send-btn,
+    .header-pill, .header-sep, .gradient-mesh, .blob { display: none !important; }
+
+    /* ── Page & body reset ── */
+    @page { margin: 1.2cm 1.5cm; size: A4 portrait; }
+    html, body { overflow: visible !important; height: auto !important; background: #fff !important; }
+
+    /* ── Header: slim bar at top of every page ── */
+    .site-header {
+        position: relative !important; height: auto !important;
+        padding: 0.4rem 0 0.6rem !important;
+        border-bottom: 1.5px solid #27aae1 !important;
+        margin-bottom: 0.2cm !important;
+        page-break-after: avoid !important; break-after: avoid !important;
+    }
+    .header-brand-name { font-size: 0.85rem !important; }
+
+    /* ── Deck: normal document flow ── */
+    .deck {
+        position: relative !important; top: 0 !important;
+        bottom: auto !important; height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* ── Each slide = one A4 page ── */
+    .slide {
+        position: relative !important; inset: auto !important;
+        display: block !important;
+        opacity: 1 !important; transform: none !important;
+        pointer-events: all !important;
+        height: auto !important; min-height: 0 !important;
+        overflow: visible !important; background: #fff !important;
+        page-break-after: always !important; break-after: page !important;
+        padding: 0 !important;
+    }
+    .slide:last-of-type { page-break-after: avoid !important; break-after: avoid !important; }
+
+    /* ── Slide content: no scroll cap, no padding quirks ── */
+    .slide > .content {
+        max-height: none !important; overflow: visible !important;
+        padding: 0.3cm 0 0.5cm !important;
+    }
+
+    /* ── Reveal: always visible ── */
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+    /* ── Keep cards / grids together ── */
+    .kpi-grid, .kpi-card, .brand-card, .seminar-card,
+    .congress-feature-card, .contact-block, .timeline-item { break-inside: avoid !important; }
+
+    /* ── photo-grid-3: restore original portrait+landscape layout ── */
+    .photo-grid-3 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        grid-template-rows: auto auto !important;
+        overflow: visible !important; gap: 0.3rem !important; padding-bottom: 0 !important;
+    }
+    .photo-grid-3 .gallery-item {
+        flex: none !important; max-width: 100% !important;
+        height: auto !important; scroll-snap-align: none !important;
+    }
+    .photo-grid-3 .gallery-item:first-child { grid-column: 1 !important; grid-row: 1 / 3 !important; aspect-ratio: auto !important; min-height: 200px !important; height: 100% !important; }
+    .photo-grid-3 .gallery-item:nth-child(2) { grid-column: 2 / 4 !important; grid-row: 1 !important; aspect-ratio: 16/7 !important; }
+    .photo-grid-3 .gallery-item:nth-child(3) { grid-column: 2 / 4 !important; grid-row: 2 !important; aspect-ratio: 16/7 !important; }
+
+    /* ── photo-grid-5: 3 cols for print (5 is too cramped) ── */
+    .photo-grid-5 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        overflow: visible !important; gap: 0.3rem !important; padding-bottom: 0 !important;
+    }
+    .photo-grid-5 .gallery-item {
+        flex: none !important; max-width: 100% !important;
+        height: auto !important; aspect-ratio: 4/3 !important; scroll-snap-align: none !important;
+    }
+    .gallery-item img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+
+    /* ── Lightbox: never visible in print ── */
+    .lightbox { display: none !important; }
 }
     </style>
 </head>
