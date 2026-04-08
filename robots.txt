@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://medskinpro-afk.github.io/--med-skin-presentation/sitemap.xml
