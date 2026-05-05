@@ -14,7 +14,7 @@
   v1.9  2026-04-08  SEO/a11y: Twitter card, JSON-LD, reduced-motion CSS, social links (Instagram + Facebook)
 -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -152,19 +152,22 @@ html, body {
 .deck { position: fixed; top: var(--header-h); left: 0; right: 0; bottom: var(--nav-h); overflow: hidden; }
 .slide {
     position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: flex-start; justify-content: center;
     background: var(--bg); overflow: hidden;
     opacity: 0; transform: translateY(10px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
+    transition: opacity 0.58s cubic-bezier(.22,.8,.28,1), transform 0.58s cubic-bezier(.22,.8,.28,1);
     pointer-events: none;
+    --slide-top-offset: clamp(1.5rem, 7vh, 4.6rem);
 }
 .slide.active { opacity: 1; transform: none; pointer-events: all; }
+.slide.active::after { animation: accentSweep 0.85s cubic-bezier(.22,.8,.28,1) both; }
 .slide > .content {
     position: relative; z-index: 2;
-    width: 100%; max-width: 1180px;
+    width: 100%; max-width: 1120px;
+    margin-top: var(--slide-top-offset);
     padding: clamp(1.2rem, 2.5vw, 2.8rem) clamp(1.5rem, 3.5vw, 4rem);
-    overflow-y: auto; max-height: 100%;
-    scrollbar-width: thin; scrollbar-color: rgba(196,162,101,0.2) transparent;
+    overflow-y: auto; max-height: calc(100% - var(--slide-top-offset));
+    scrollbar-width: thin; scrollbar-color: rgba(39,170,225,0.2) transparent;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -181,12 +184,34 @@ html, body {
 .blob:nth-child(2) { animation-duration: 28s; animation-direction: reverse; }
 .blob:nth-child(3) { animation-duration: 35s; animation-delay: -10s; }
 
-/* Decorative gold line top of slide */
+/* Decorative blue line top of slide */
 .slide::after {
     content: '';
     position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
     background: linear-gradient(to right, transparent, rgba(39,170,225,0.2), transparent);
     pointer-events: none; z-index: 3;
+    transform-origin: center;
+}
+.slide::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: 0;
+    width: min(720px, 72vw); height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(39,170,225,0.68), transparent);
+    transform: translateX(-50%) scaleX(0);
+    opacity: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+.slide.active::before { animation: slideSignal 1.05s cubic-bezier(.22,.8,.28,1) both; }
+@keyframes slideSignal {
+    0% { opacity: 0; transform: translateX(-50%) scaleX(0); }
+    38% { opacity: 1; }
+    100% { opacity: 0.48; transform: translateX(-50%) scaleX(1); }
+}
+@keyframes accentSweep {
+    0% { transform: scaleX(0.58); opacity: 0; }
+    100% { transform: scaleX(1); opacity: 1; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -355,6 +380,66 @@ html, body {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    KPI CARDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Motion and alignment polish */
+.slide.active .kpi-card,
+.slide.active .brand-card,
+.slide.active .seminar-card,
+.slide.active .congress-feature-card,
+.slide.active .gallery-item,
+.slide.active .contact-block {
+    animation: cardRise 0.64s cubic-bezier(.22,.8,.28,1) both;
+}
+.slide.active .kpi-card:nth-child(2),
+.slide.active .brand-card:nth-child(2),
+.slide.active .seminar-card:nth-child(2),
+.slide.active .gallery-item:nth-child(2) { animation-delay: 0.05s; }
+.slide.active .kpi-card:nth-child(3),
+.slide.active .brand-card:nth-child(3),
+.slide.active .seminar-card:nth-child(3),
+.slide.active .gallery-item:nth-child(3) { animation-delay: 0.1s; }
+.slide.active .kpi-card:nth-child(4),
+.slide.active .brand-card:nth-child(4),
+.slide.active .seminar-card:nth-child(4),
+.slide.active .gallery-item:nth-child(4) { animation-delay: 0.15s; }
+.slide.active .brand-card:nth-child(n+5),
+.slide.active .seminar-card:nth-child(n+5),
+.slide.active .gallery-item:nth-child(n+5) { animation-delay: 0.2s; }
+@keyframes cardRise {
+    from { opacity: 0; transform: translateY(14px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.kpi-card,
+.brand-card,
+.seminar-card,
+.congress-feature-card,
+.contact-block,
+.gallery-item { will-change: transform; }
+.kpi-card:hover,
+.seminar-card:hover,
+.brand-card:hover,
+.congress-feature-card:hover,
+.contact-block:hover { box-shadow: 0 18px 38px rgba(39,170,225,0.12); }
+.kpi-card:hover,
+.seminar-card:hover { transform: translateY(-2px); }
+.kpi-card,
+.seminar-card { transition: background 0.22s, transform 0.22s, box-shadow 0.22s, border-color 0.22s; }
+.contact-block {
+    box-shadow: 0 18px 48px rgba(39,170,225,0.08);
+    backdrop-filter: blur(12px);
+}
+.gallery-item {
+    box-shadow: 0 10px 28px rgba(10,24,32,0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+.gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 48px rgba(10,24,32,0.16);
+}
+.slide-5 .content,
+.slide-6 .content { max-width: 1100px; }
+.slide-6 .contact-block { margin-top: 1.35rem; }
+
 .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; margin-top: 1.5rem; background: rgba(39,170,225,0.12); border: 1px solid rgba(39,170,225,0.15); border-radius: 0.75rem; overflow: hidden; }
 .kpi-card {
     background: #ffffff; padding: 1.1rem 1.3rem;
@@ -501,9 +586,12 @@ html, body {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .nav-controls {
     position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-h);
-    background: rgba(255,255,255,0.97);
+    background: rgba(255,255,255,0.9);
     border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+    box-shadow: 0 -12px 40px rgba(39,170,225,0.08);
+    backdrop-filter: blur(16px);
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    padding: 0 1.4rem;
     z-index: 300;
 }
 .nav-btn {
@@ -520,21 +608,21 @@ html, body {
 .slide-dots .dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--text-pale); cursor: pointer;
-    transition: background 0.25s, width 0.25s, border-radius 0.25s;
+    transition: background 0.25s, width 0.25s, border-radius 0.25s, transform 0.25s;
     -webkit-tap-highlight-color: transparent;
 }
-.slide-dots .dot.active { background: var(--gold); width: 20px; border-radius: 3px; }
+.slide-dots .dot.active { background: var(--gold); width: 22px; border-radius: 3px; transform: scaleY(1.18); }
 .slide-counter { font-size: 0.68rem; color: var(--text-muted); font-weight: 400; min-width: 36px; text-align: center; font-family: var(--font-ui); letter-spacing: 0.1em; }
 .nav-labels { display: flex; gap: 0.3rem; align-items: center; }
 .nav-label {
     font-size: 0.6rem; color: var(--text-muted); padding: 0.22rem 0.65rem;
     border-radius: 999px; border: 1px solid transparent; cursor: pointer;
-    transition: all 0.2s; white-space: nowrap; font-family: var(--font-ui);
+    transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s; white-space: nowrap; font-family: var(--font-ui);
     letter-spacing: 0.08em; text-transform: uppercase;
     -webkit-tap-highlight-color: transparent;
 }
-.nav-label.active { background: var(--gold-dim); color: var(--gold); border-color: var(--border-gold); }
-.nav-label:hover:not(.active) { color: var(--text-mid); border-color: var(--border); }
+.nav-label.active { background: var(--gold-dim); color: var(--gold); border-color: var(--border-gold); transform: translateY(-1px); }
+.nav-label:hover:not(.active) { color: var(--text-mid); border-color: var(--border); transform: translateY(-1px); }
 .nav-divider { width: 1px; height: 16px; background: var(--border); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -618,7 +706,7 @@ html, body {
         padding-bottom: calc(var(--nav-h) + 1.5rem) !important;
     }
     .slide.active { display: flex !important; }
-    .slide > .content { max-height: none; padding: 1rem 1.1rem 1.5rem; overflow-y: visible; }
+    .slide > .content { max-height: none; margin-top: 0; padding: 1rem 1.1rem 1.5rem; overflow-y: visible; }
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .slide-title { font-size: clamp(1.6rem,6vw,2.2rem); }
     .slide-subtitle { font-size: 0.8rem; }
@@ -681,6 +769,7 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.001ms !important;
+        animation-delay: 0ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
@@ -728,7 +817,7 @@ html, body {
 
     /* ── Slide content: no scroll cap, no padding quirks ── */
     .slide > .content {
-        max-height: none !important; overflow: visible !important;
+        max-height: none !important; margin-top: 0 !important; overflow: visible !important;
         padding: 0.3cm 0 0.5cm !important;
     }
 
