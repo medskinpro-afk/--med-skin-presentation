@@ -22,8 +22,8 @@
 | Company | Med & Skin SRL |
 | Founded | 2017, Brussels, Belgium |
 | HQ | Chaussée d'Etterbeek 168, 1040 Etterbeek, Bruxelles |
-| Email | info@med-skin.be |
-| Phone | +32 471 30 77 52 |
+| Email | medskin.pro@med-skin.be |
+| Phone | +32 483 19 82 72 |
 | Website | https://med-skin.be |
 | Events | https://med-skin.events |
 | Markets | Benelux, United Kingdom, France |
@@ -346,7 +346,7 @@ const mob = window.innerWidth <= 640;
 - Set explicit z-indexes: deck=10, spotlight=5, header/nav=300
 
 ### Email obfuscation — FIXED
-Original file had Cloudflare `__cf_email__` obfuscation. All replaced with direct `mailto:info@med-skin.be` links.
+Original file had Cloudflare `__cf_email__` obfuscation. All replaced with direct `mailto:medskin.pro@med-skin.be` links.
 
 ### Timeline overflow (Slide 2) — FIXED
 Timeline items were too tall. Reduced margins and font sizes for compact fit.
@@ -395,8 +395,8 @@ To update: replace `index.html` in the repository → GitHub Pages auto-deploys 
 
 ```
 Company:  Med & Skin SRL
-Email:    info@med-skin.be (mailto: link)
-Phone:    +32 471 30 77 52
+Email:    medskin.pro@med-skin.be (mailto: link)
+Phone:    +32 483 19 82 72
 Address:  Chaussée d'Etterbeek 168, 1040 Etterbeek, Bruxelles
 Website:  https://med-skin.be
 Events:   https://med-skin.events
