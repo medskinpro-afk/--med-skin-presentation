@@ -299,6 +299,7 @@ html, body {
     content: "";
     position: absolute;
     inset: -6px;
+    z-index: 0;
     border: 1px solid rgba(37,211,102,0.38);
     border-radius: inherit;
     animation: whatsappPulse 2.4s ease-out infinite;
@@ -313,6 +314,8 @@ html, body {
     outline-offset: 4px;
 }
 .whatsapp-bubble svg {
+    position: relative;
+    z-index: 2;
     width: 30px;
     height: 30px;
     display: block;
@@ -327,13 +330,14 @@ html, body {
     padding: 0.48rem 0.72rem;
     border-radius: 999px;
     background: rgba(255,255,255,0.96);
-    color: var(--text-main);
+    color: #1f2933;
     border: 1px solid rgba(37,211,102,0.26);
     box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-    font-size: 0.72rem;
+    z-index: 3;
+    font-size: 0.78rem;
+    font-weight: 600;
     letter-spacing: 0;
-    text-transform: uppercase;
-    opacity: 0;
+    opacity: 0.96;
     pointer-events: none;
     transition: opacity 0.18s ease, transform 0.18s ease;
 }
@@ -787,8 +791,8 @@ html, body {
 
 <div class="mouse-spotlight"></div>
 
-<a href="https://wa.me/32483198272" target="_blank" rel="noopener noreferrer" class="whatsapp-bubble" aria-label="Write to Med & Skin on WhatsApp">
-    <span class="whatsapp-bubble-label">WhatsApp</span>
+<a href="https://wa.me/32483198272" target="_blank" rel="noopener noreferrer" class="whatsapp-bubble" aria-label="Write to Med & Skin on WhatsApp" title="Message us on WhatsApp">
+    <span class="whatsapp-bubble-label">Message us on WhatsApp</span>
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
         <path d="M16.02 3.2C9.05 3.2 3.4 8.8 3.4 15.7c0 2.36.66 4.57 1.8 6.45L3.2 28.8l6.86-1.8a12.7 12.7 0 0 0 5.96 1.5c6.97 0 12.63-5.6 12.63-12.5S22.99 3.2 16.02 3.2Zm0 22.94c-1.9 0-3.66-.5-5.2-1.4l-.37-.22-4.06 1.07 1.08-3.94-.25-.4a10.14 10.14 0 0 1-1.55-5.38c0-5.6 4.64-10.15 10.35-10.15 5.7 0 10.34 4.55 10.34 10.15 0 5.6-4.64 10.27-10.34 10.27Zm5.67-7.68c-.31-.15-1.85-.9-2.14-1-.29-.1-.5-.15-.72.16-.2.3-.82 1-.99 1.2-.18.2-.36.23-.67.08-.31-.15-1.3-.47-2.48-1.51-.92-.8-1.54-1.8-1.72-2.1-.18-.3-.02-.47.14-.62.14-.14.31-.36.46-.54.16-.18.21-.3.31-.51.1-.2.05-.38-.03-.54-.07-.15-.72-1.7-.98-2.33-.26-.62-.52-.53-.72-.54h-.61c-.21 0-.54.08-.83.38-.28.3-1.09 1.06-1.09 2.58s1.12 3 1.28 3.2c.15.2 2.2 3.33 5.33 4.67.75.32 1.33.51 1.78.65.75.23 1.43.2 1.97.12.6-.09 1.85-.75 2.1-1.47.27-.72.27-1.34.19-1.47-.08-.13-.28-.2-.59-.35Z"/>
     </svg>
