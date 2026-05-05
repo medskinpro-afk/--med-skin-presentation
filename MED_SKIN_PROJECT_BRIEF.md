@@ -9,7 +9,7 @@
 
 **Purpose:** Given to doctors, partners, and clients to browse. Think of it as a digital brochure / slide deck in a browser.
 
-**Live URL:** https://medskinpro-afk.github.io/--med-skin-presentation/
+**Live URL:** https://presentation.med-skin.be/
 **GitHub repo:** https://github.com/medskinpro-afk/--med-skin-presentation
 **Main file:** `index.html` (single self-contained file — all CSS, JS, and photos embedded as base64)
 
