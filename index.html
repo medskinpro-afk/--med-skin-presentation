@@ -377,6 +377,15 @@ html, body {
 .contact-send-btn:active { transform: translateY(0); }
 .contact-events-link { font-size: 0.7rem; color: var(--text-muted); text-decoration: none; text-align: center; }
 .contact-map { margin-top: 0.7rem; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); }
+.contact-map-btn {
+    display: block; width: 100%; text-align: center;
+    padding: 0.5rem; font-size: 0.68rem; font-weight: 500;
+    background: var(--bg-2); color: var(--gold);
+    text-decoration: none; letter-spacing: 0.04em;
+    border-top: 1px solid var(--border);
+    transition: background 0.2s, color 0.2s;
+}
+.contact-map-btn:hover { background: var(--gold-dim); color: var(--gold-light); }
 .contact-events-link a { color: var(--gold); text-decoration: none; }
 .contact-events-link a:hover { color: var(--gold-light); }
 .whatsapp-bubble {
@@ -1446,7 +1455,8 @@ html, body {
                             <a href="https://maps.google.com/?q=Chaussée+d'Etterbeek+168,+1040+Etterbeek,+Brussels" target="_blank" rel="noopener noreferrer">Chaussée d'Etterbeek 168, 1040 Etterbeek, Brussels</a>
                         </div>
                         <div class="contact-map">
-                            <iframe src="https://maps.google.com/maps?q=Chauss%C3%A9e+d%27Etterbeek+168%2C+1040+Etterbeek%2C+Brussels&output=embed&z=16" width="100%" height="160" style="border:0;border-radius:0.5rem;display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Med &amp; Skin SRL location"></iframe>
+                            <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=4.376,50.831,4.396,50.840&layer=mapnik&marker=50.8356,4.3864" width="100%" height="160" style="border:0;border-radius:0.5rem 0.5rem 0 0;display:block;" loading="lazy" title="Med &amp; Skin SRL location"></iframe>
+                            <a href="https://maps.google.com/?q=Chaussée+d'Etterbeek+168,+1040+Etterbeek,+Brussels" target="_blank" rel="noopener noreferrer" class="contact-map-btn">&#128205; Open in Google Maps ↗</a>
                         </div>
                         <div class="contact-row">
                             <span class="contact-icon">&#9993;</span>
