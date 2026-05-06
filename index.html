@@ -818,14 +818,38 @@ html, body {
     .slide.active { display: flex !important; }
     .slide > .content { max-height: none; margin-top: 0; padding: 1rem 1.1rem 1.5rem; overflow-y: visible; }
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+    /* ── Typography ── */
     .slide-title { font-size: clamp(1.6rem,6vw,2.2rem); }
-    .slide-subtitle { font-size: 0.8rem; }
-    .kpi-grid { grid-template-columns: repeat(2,1fr); gap: 1px; }
+    .slide-subtitle { font-size: 0.82rem; line-height: 1.65; }
+    .section-label { font-size: 0.63rem; }
+    .section-h3 { font-size: 0.63rem; padding-bottom: 0.4rem; margin-bottom: 0.6rem; }
+    .timeline-text { font-size: 0.75rem !important; }
+    .seminar-title { font-size: 0.8rem; }
+    .seminar-detail { font-size: 0.7rem !important; }
+    .seminar-meta { font-size: 0.62rem; }
+    .ct-org, .ct-brands, .ct-name { font-size: 0.78rem !important; }
+    .kpi-label { font-size: 0.62rem !important; }
+    .kpi-sub { font-size: 0.68rem !important; }
+    .brand-name { font-size: 0.76rem; }
+    .brand-type { font-size: 0.66rem; }
+
+    /* ── KPI grid ── */
+    .kpi-grid { grid-template-columns: repeat(2,1fr); gap: 1px; margin-top: 0.4rem !important; }
     .kpi-value { font-size: 1.6rem; }
+
+    /* ── Brand grid: 2 columns on mobile ── */
+    .brand-grid-mobile { grid-template-columns: repeat(2,1fr) !important; }
+
+    /* ── Seminar grid: 1 column ── */
     .seminar-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+
+    /* ── Data-grid layouts: stack ── */
     [data-grid] { grid-template-columns: 1fr !important; }
     [data-grid="seminars"] { grid-template-columns: 1fr !important; }
     #congress-grid { grid-template-columns: 1fr !important; }
+
+    /* ── Gallery ── */
     .photo-grid-3, .photo-grid-5 {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
@@ -837,38 +861,57 @@ html, body {
     }
     .photo-grid-3 .gallery-item,
     .photo-grid-5 .gallery-item {
-        flex: unset !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        height: 130px !important;
-        min-height: 0 !important;
-        scroll-snap-align: none !important;
-        aspect-ratio: unset !important;
+        flex: unset !important; max-width: 100% !important; width: 100% !important;
+        height: 120px !important; min-height: 0 !important;
+        scroll-snap-align: none !important; aspect-ratio: unset !important;
     }
     .photo-grid-3 .gallery-item img,
-    .photo-grid-5 .gallery-item img {
-        width: 100%; height: 100%; object-fit: cover;
-    }
-    .slide-footer { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+    .photo-grid-5 .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── Footer ── */
+    .slide-footer { flex-direction: column; align-items: flex-start; gap: 0.3rem; margin-top: 0.4rem !important; padding-top: 0.5rem !important; }
     .footer-right { align-items: flex-start; }
+
+    /* ── Header ── */
     .site-header { position: sticky !important; top: 0; padding: 0 1rem; }
     .header-logo { height: 24px; }
     .header-brand-name { display: none; }
     .header-version { display: none; }
     .header-email { display: none; }
     .header-right { gap: 0.6rem; }
-    .header-pill { padding: 0.45rem 0.9rem; font-size: 0.65rem; min-height: 36px; display: inline-flex; align-items: center; }
+    .header-pill { padding: 0.45rem 0.9rem; font-size: 0.65rem; min-height: 44px; display: inline-flex; align-items: center; }
     .header-pdf-btn { display: none !important; }
+
+    /* ── Slide 1 ── */
     .s1-col { gap: 0.6rem !important; }
     .s1-address { display: none !important; }
-    .kpi-grid { margin-top: 0.4rem !important; }
-    .slide-footer { margin-top: 0.4rem !important; padding-top: 0.5rem !important; }
+
+    /* ── Nav controls: 44px touch targets ── */
     .nav-controls { gap: 0.8rem; }
-    .nav-btn { width: 40px; height: 40px; }
-    .cta-btn { font-size: 0.7rem; padding: 0.6rem 1.2rem; margin-top: 0.6rem; }
+    .nav-btn { width: 44px; height: 44px; font-size: 1.2rem; }
+    .slide-dots .dot { width: 7px; height: 7px; }
+
+    /* ── CTA button ── */
+    .cta-btn { font-size: 0.72rem; padding: 0.75rem 1.4rem; margin-top: 0.6rem; min-height: 44px; }
+
+    /* ── Contact block ── */
     .contact-block { padding: 1.2rem; border-radius: 0.75rem; }
     .contact-heading { font-size: 0.95rem; }
-    .contact-send-btn { padding: 0.65rem 1.3rem; font-size: 0.7rem; }
+    .contact-cta { width: 100%; align-items: stretch; }
+    .contact-send-btn { padding: 0.75rem 1.3rem; font-size: 0.72rem; min-height: 44px; width: 100%; justify-content: center; }
+    .contact-events-link { text-align: center; }
+
+    /* ── Congress feature cards ── */
+    .cfc-inner { padding: 1rem; gap: 0.4rem; }
+    .cfc-number { font-size: 1.5rem; }
+    .cfc-name { font-size: 0.88rem; }
+    .cfc-sub { font-size: 0.7rem; }
+
+    /* ── Lightbox: bring arrows in from edges ── */
+    .lightbox-prev { left: 0.5rem; }
+    .lightbox-next { right: 0.5rem; }
+
+    /* ── WhatsApp bubble ── */
     .whatsapp-bubble { right: 1.25rem; bottom: 4.65rem; width: 54px; height: 54px; }
     .whatsapp-bubble-label { display: none; }
 }
